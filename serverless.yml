@@ -1,0 +1,74 @@
+org: mateoespinoza
+service: api-compra
+
+provider:
+  name: aws
+  runtime: nodejs16.x  # Usamos Node.js 16.x
+  iam:
+    role: arn:aws:iam::399737753482:role/LabRole  # Aquí se asigna el ARN del rol LabRole
+
+  environment:
+    COMPRAS_TABLE: ${self:custom.tables.compras}  # Tabla de compras
+
+custom:
+  tables:
+    compras: t_compras  # Nombre de la tabla DynamoDB para compras
+
+resources:
+  Resources:
+    ComprasTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tables.compras}
+        AttributeDefinitions:
+          - AttributeName: id_compra
+            AttributeType: S
+          - AttributeName: user_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id_compra
+            KeyType: HASH  # Clave primaria por id_compra
+          - AttributeName: user_id
+            KeyType: RANGE  # Clave de ordenación por user_id
+        BillingMode: PAY_PER_REQUEST
+
+functions:
+  CrearCompra:
+    handler: crearCompra.handler
+    events:
+      - http:
+          path: /compras
+          method: post
+          cors: true
+
+  EliminarCompra:
+    handler: eliminarCompra.handler
+    events:
+      - http:
+          path: /compras/{id_compra}
+          method: delete
+          cors: true
+
+  ModificarCompra:
+    handler: modificarCompra.handler
+    events:
+      - http:
+          path: /compras/{id_compra}
+          method: put
+          cors: true
+
+  ObtenerCompraById:
+    handler: obtenerCompraPorId.handler
+    events:
+      - http:
+          path: /compras/{id_compra}
+          method: get
+          cors: true
+
+  ObtenerCompras:
+    handler: obtenerCompras.handler
+    events:
+      - http:
+          path: /compras
+          method: get
+          cors: true
