@@ -3,7 +3,7 @@ service: api-compra
 
 provider:
   name: aws
-  runtime: nodejs16.x  # Usamos Node.js 16.x
+  runtime: nodejs14.x  # Usamos Node.js 16.x
   iam:
     role: arn:aws:iam::399737753482:role/LabRole  # Aquí se asigna el ARN del rol LabRole
 
@@ -34,7 +34,7 @@ resources:
 
 functions:
   CrearCompra:
-    handler: crearCompra.handler
+    handler: CrearCompra.handler
     events:
       - http:
           path: /compras
@@ -42,7 +42,7 @@ functions:
           cors: true
 
   EliminarCompra:
-    handler: eliminarCompra.handler
+    handler: EliminarCompra.handler
     events:
       - http:
           path: /compras/{id_compra}
@@ -50,7 +50,7 @@ functions:
           cors: true
 
   ModificarCompra:
-    handler: modificarCompra.handler
+    handler: ModificarCompra.handler
     events:
       - http:
           path: /compras/{id_compra}
@@ -58,7 +58,7 @@ functions:
           cors: true
 
   ObtenerCompraById:
-    handler: obtenerCompraPorId.handler
+    handler: ObtenerCompraId.handler
     events:
       - http:
           path: /compras/{id_compra}
@@ -66,7 +66,7 @@ functions:
           cors: true
 
   ObtenerCompras:
-    handler: obtenerCompras.handler
+    handler: ObtenerCompras.handler
     events:
       - http:
           path: /compras
