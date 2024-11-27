@@ -8,7 +8,7 @@ exports.handler = async (event) => {
     try {
         const body = JSON.parse(event.body);
         
-        // Validar que los datos esenciales estén presentes
+        // Validar que los datos esenciales estén presentess
         if (!body.id_vuelo || !body.cantidad_boletos || !body.precio_total || !body.user_id) {
             return {
                 statusCode: 400,
