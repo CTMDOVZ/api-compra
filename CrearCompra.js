@@ -1,6 +1,5 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-const { DateTime } = require('luxon');
 
 const COMPRAS_TABLE = process.env.COMPRAS_TABLE;
 
@@ -21,7 +20,7 @@ exports.handler = async (event) => {
             user_id: body.user_id,  // Usar el user_id en lugar de id_usuario
             id_compra: body.id_compra,  // Usar el id_compra proporcionado
             id_vuelo: body.id_vuelo,
-            fecha_compra: DateTime.now().toISO(),
+            fecha_compra: new Date().toISOString(),  // Fecha estándar en formato ISO
             cantidad_boletos: body.cantidad_boletos,
             precio_total: body.precio_total,
             estado: 'pendiente'  // Estado inicial
